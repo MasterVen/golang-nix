@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"sync"
 )
@@ -34,4 +36,20 @@ func post(id string, wg *sync.WaitGroup) {
 		panic(errRead)
 	}
 	fmt.Println(string(bytes))
+	createWriteFile(string(bytes), id)
+}
+
+func createWriteFile(data string, id string) {
+
+	c, err := os.Create("./filesData/" + id + ".txt")
+	if err != nil {
+		log.Fatal("whoops", err)
+	}
+
+	ws, err := c.WriteString(data)
+	if err != nil {
+		log.Fatal("whoops", err)
+	}
+	fmt.Println("bytes written", ws)
+
 }
