@@ -1,7 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("Hello, NIX Education")
+	requestUrl := "https://jsonplaceholder.typicode.com/posts/"
+
+	resp, err := http.Get(requestUrl)
+	if err != nil {
+		panic(err)
+	}
+	bytes, errRead := ioutil.ReadAll(resp.Body)
+	if errRead != nil {
+		panic(errRead)
+	}
+	fmt.Print(string(bytes))
+
 }
